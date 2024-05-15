@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: User CRUD API
+  description: API per gestire le operazioni CRUD sugli utenti
+  version: 1.0.0
+servers:
+  - url: http://api.example.com/v1
+paths:
+  /users:
+    get:
+      summary: Elenco degli utenti
+      description: Restituisce un elenco di tutti gli utenti.
+      responses:
+        '200':
+          description: Elenco degli utenti recuperato con successo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Creare un nuovo utente
+      description: Crea un nuovo utente con i dati forniti
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Utente creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID univoco dell'utente
+        username:
+          type: string
+          description: Nome utente dell'utente
+        email:
+          type: string
+          format: email
+          description: Indirizzo email dell'utente
+        password:
+          type: string
+          description: Password dell'utente (criptata)
+      required:
+        - username
+        - email
+        - password
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Descrizione dell'errore
