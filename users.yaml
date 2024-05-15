@@ -18,7 +18,13 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/UserResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       summary: Creare un nuovo utente
       description: Crea un nuovo utente con i dati forniti
@@ -34,9 +40,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    BaseResponse: 
+      type: object
+      properties:
+        service:
+          type: string
+          description: service identifier
+        time:
+          type: string
+          format: date-time
+          description: response datetime
+        TID:
+          type: string
+          description: transaction id
+        isOk:
+          type: boolean
+          description: result  
     User:
       type: object
       properties:
@@ -58,6 +86,14 @@ components:
         - username
         - email
         - password
+    UserResponse: 
+        allOf: 
+          - $ref: '#/components/schemas/BaseResponse'
+          - type: object
+            properties: 
+              response: 
+                allOf:
+                  - $ref: '#/components/schemas/User'          
     ErrorResponse:
       type: object
       properties:
